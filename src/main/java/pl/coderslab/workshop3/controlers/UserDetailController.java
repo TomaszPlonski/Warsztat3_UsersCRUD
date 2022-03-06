@@ -16,11 +16,15 @@ public class UserDetailController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         if (id == null){
-            resp.sendRedirect("/WEB-INF/views/list.jsp");
+            resp.sendRedirect("/list");
         } else {
             User user = UserDao.read(Integer.parseInt(id));
-            req.setAttribute("user",user);
-            getServletContext().getRequestDispatcher("/WEB-INF/views/show.jsp").forward(req,resp);
+            if (user == null){
+                resp.sendRedirect("/list");
+            } else {
+                req.setAttribute("user", user);
+                getServletContext().getRequestDispatcher("/WEB-INF/views/show.jsp").forward(req, resp);
+            }
         }
     }
 }
